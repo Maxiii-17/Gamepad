@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Gamepad — Project Summary</title>
+<style>
+  :root {
+    --navy: #0b1220;
+    --navy2: #101b30;
+    --blue: #2563eb;
+    --blue2: #60a5fa;
+    --ink: #0f172a;
+    --muted: #5b677a;
+    --line: #dfe6f0;
+    --soft: #f8fafc;
+    --green: #0f766e;
+    --amber: #b45309;
+    --red: #b91c1c;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #e8edf5;
+    color: var(--ink);
+    font-family: "Segoe UI", Arial, sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 auto;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+    padding: 15mm 15mm 12mm;
+  }
+
+  .page:last-child { page-break-after: auto; }
+
+  @page { size: A4; margin: 0; }
+
+  .footer {
+    position: absolute;
+    left: 15mm;
+    right: 15mm;
+    bottom: 7mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--line);
+    padding-top: 2.2mm;
+    color: #7b8798;
+    font-size: 7.4pt;
+    letter-spacing: 0.02em;
+  }
+
+  .footer strong { color: #32405a; font-weight: 600; }
+
+  .band {
+    margin: -15mm -15mm 0;
+    padding: 16mm 15mm 11mm;
+    color: #ffffff;
+    background:
+      radial-gradient(circle at 82% 18%, rgba(37, 99, 235, 0.38), transparent 38%),
+      linear-gradient(135deg, #0b1220 0%, #101b30 62%, #14284a 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .band::after {
+    content: "";
+    position: absolute;
+    right: -22mm;
+    bottom: -30mm;
+    width: 95mm;
+    height: 95mm;
+    border: 1px solid rgba(96, 165, 250, 0.26);
+    border-radius: 50%;
+    box-shadow: 0 0 0 12mm rgba(96, 165, 250, 0.05);
+  }
+
+  .eyebrow {
+    font-size: 7.6pt;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #93c5fd;
+    margin-bottom: 3mm;
+  }
+
+  h1 {
+    font-size: 37pt;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    margin: 0 0 3mm;
+    font-weight: 800;
+  }
+
+  .tagline {
+    font-size: 12.6pt;
+    line-height: 1.35;
+    color: #dbeafe;
+    max-width: 150mm;
+    margin: 0 0 5mm;
+  }
+
+  .chiprow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.8mm;
+    margin-bottom: 7mm;
+  }
+
+  .chip {
+    font-size: 7.2pt;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: #bfdbfe;
+    border: 1px solid rgba(147, 197, 253, 0.32);
+    background: rgba(37, 99, 235, 0.12);
+    border-radius: 20mm;
+    padding: 1.3mm 2.8mm;
+  }
+
+  .metarow {
+    display: grid;
+    grid-template-columns: 1.05fr 1.05fr 1.4fr 1fr;
+    gap: 2mm;
+    position: relative;
+    z-index: 1;
+  }
+
+  .meta {
+    border-left: 2px solid rgba(96, 165, 250, 0.55);
+    padding-left: 2.5mm;
+  }
+
+  .meta span {
+    display: block;
+    font-size: 6.7pt;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #93a4bd;
+    margin-bottom: 0.8mm;
+  }
+
+  .meta strong {
+    display: block;
+    font-size: 8.4pt;
+    line-height: 1.25;
+    color: #ffffff;
+    font-weight: 650;
+  }
+
+  .meta strong.warn { color: #fbbf24; }
+
+  h2 {
+    font-size: 15.5pt;
+    letter-spacing: -0.012em;
+    margin: 0 0 3.2mm;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 2.6mm;
+  }
+
+  h2::before {
+    content: "";
+    width: 4.2mm;
+    height: 4.2mm;
+    border-radius: 1.2mm;
+    background: linear-gradient(135deg, var(--blue), var(--blue2));
+    flex: 0 0 auto;
+  }
+
+  h2 .sub {
+    font-size: 8pt;
+    font-weight: 500;
+    color: #7b8798;
+    letter-spacing: 0;
+    margin-left: auto;
+  }
+
+  .lead {
+    font-size: 9.4pt;
+    line-height: 1.55;
+    color: #334155;
+    margin: 5mm 0 3.2mm;
+  }
+
+  .callout {
+    border-radius: 2.2mm;
+    padding: 3mm 3.6mm;
+    font-size: 8.25pt;
+    line-height: 1.42;
+    margin-bottom: 4mm;
+  }
+
+  .callout.critical {
+    background: #fef2f2;
+    border-left: 3.5px solid var(--red);
+    color: #5b1a1a;
+  }
+
+  .callout.good {
+    background: #ecfdf5;
+    border-left: 3.5px solid var(--green);
+    color: #103f37;
+  }
+
+  .callout strong { font-weight: 700; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.6mm 3mm;
+  }
+
+  .card {
+    border: 1px solid var(--line);
+    border-radius: 2.5mm;
+    padding: 2.7mm 3mm;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    break-inside: avoid;
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+    margin-bottom: 1mm;
+  }
+
+  .num {
+    width: 5.4mm;
+    height: 5.4mm;
+    border-radius: 1.5mm;
+    background: #eaf2ff;
+    color: #1d4ed8;
+    font-size: 7.4pt;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+
+  .card h3 {
+    font-size: 9.2pt;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+  }
+
+  .card p {
+    font-size: 7.9pt;
+    line-height: 1.38;
+    color: #46556c;
+    margin: 0;
+  }
+
+  .pill {
+    display: inline-block;
+    font-size: 6.3pt;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 0.8mm 2mm;
+    border-radius: 10mm;
+    flex: 0 0 auto;
+  }
+
+  .pill.critical { background: #fee2e2; color: #991b1b; }
+  .pill.high { background: #ffedd5; color: #9a3412; }
+  .pill.medium { background: #e0f2fe; color: #075985; }
+  .pill.pass { background: #d1fae5; color: #065f46; }
+
+  .flow {
+    display: flex;
+    align-items: stretch;
+    gap: 1.6mm;
+    margin: 1mm 0 2.4mm;
+  }
+
+  .node {
+    flex: 1;
+    border: 1px solid #c9d9f2;
+    border-radius: 2.2mm;
+    background: linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+    padding: 2.5mm 1.6mm;
+    text-align: center;
+    min-width: 0;
+  }
+
+  .node b {
+    display: block;
+    font-size: 7.9pt;
+    line-height: 1.25;
+    color: #102a56;
+    margin-bottom: 0.8mm;
+  }
+
+  .node span {
+    display: block;
+    font-size: 6.7pt;
+    line-height: 1.3;
+    color: #64748b;
+  }
+
+  .arrow {
+    align-self: center;
+    color: var(--blue);
+    font-size: 14pt;
+    font-weight: 800;
+    line-height: 1;
+    padding: 0 0.2mm;
+  }
+
+  .caption {
+    font-size: 7.2pt;
+    color: #64748b;
+    line-height: 1.4;
+    margin: 0 0 4mm;
+  }
+
+  .seq {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2mm;
+    margin: 1mm 0 4mm;
+  }
+
+  .step {
+    border-top: 2.2px solid #bfdbfe;
+    padding-top: 2mm;
+  }
+
+  .step .n {
+    display: inline-flex;
+    width: 4.8mm;
+    height: 4.8mm;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--blue);
+    color: #fff;
+    font-size: 6.8pt;
+    font-weight: 800;
+    margin-bottom: 1.1mm;
+  }
+
+  .step b {
+    display: block;
+    font-size: 7.7pt;
+    line-height: 1.3;
+    margin-bottom: 0.7mm;
+  }
+
+  .step p {
+    margin: 0;
+    font-size: 7pt;
+    line-height: 1.35;
+    color: #5b677a;
+  }
+
+  .cols2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4mm 6mm;
+  }
+
+  .note h3 {
+    font-size: 8.8pt;
+    margin: 0 0 1.4mm;
+    color: #1e3a8a;
+    display: flex;
+    align-items: center;
+    gap: 1.8mm;
+  }
+
+  .note h3::before {
+    content: "";
+    width: 1.4mm;
+    height: 1.4mm;
+    border-radius: 50%;
+    background: var(--blue);
+    flex: 0 0 auto;
+  }
+
+  .note ul, .note ol {
+    margin: 0;
+    padding-left: 4mm;
+  }
+
+  .note li {
+    font-size: 7.75pt;
+    line-height: 1.38;
+    color: #46556c;
+    margin-bottom: 1.1mm;
+  }
+
+  .note li b { color: #1f2d44; }
+
+  .status-row {
+    display: flex;
+    gap: 2mm;
+    margin-top: 1.2mm;
+  }
+
+  .status {
+    flex: 1;
+    border-radius: 1.8mm;
+    padding: 1.8mm 2mm;
+    font-size: 6.9pt;
+    line-height: 1.3;
+    border: 1px solid var(--line);
+    background: var(--soft);
+  }
+
+  .status b { display: block; font-size: 7.2pt; margin-bottom: 0.4mm; }
+  .status.green b { color: var(--green); }
+  .status.amber b { color: var(--amber); }
+  .status.red b { color: var(--red); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 7.7pt;
+    line-height: 1.35;
+    margin-bottom: 4mm;
+  }
+
+  th {
+    text-align: left;
+    background: #eef4ff;
+    color: #1e3a8a;
+    border-bottom: 1px solid #c7d7f5;
+    padding: 1.8mm 2mm;
+    font-size: 6.9pt;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 1.55mm 2mm;
+    border-bottom: 1px solid #e6edf7;
+    vertical-align: top;
+    color: #334155;
+  }
+
+  td:first-child { font-weight: 600; color: #1f2d44; }
+
+  .status-cell { white-space: nowrap; font-weight: 700; font-size: 7.1pt; }
+  .status-cell.pass { color: var(--green); }
+  .status-cell.partial { color: var(--amber); }
+  .status-cell.fail { color: var(--red); }
+
+  .issue {
+    border: 1px solid var(--line);
+    border-radius: 2.4mm;
+    padding: 2.6mm 3.2mm;
+    margin-bottom: 2.2mm;
+    background: #ffffff;
+    break-inside: avoid;
+  }
+
+  .issue-head {
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+    margin-bottom: 0.9mm;
+  }
+
+  .issue h3 {
+    font-size: 8.9pt;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+  }
+
+  .issue p {
+    margin: 0;
+    font-size: 7.65pt;
+    line-height: 1.38;
+    color: #46556c;
+  }
+
+  .issue p b { color: #1f2d44; }
+
+  .compact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2mm 4mm;
+    margin: 0 0 4mm;
+    padding: 0;
+    list-style: none;
+  }
+
+  .compact li {
+    font-size: 7.55pt;
+    line-height: 1.38;
+    color: #46556c;
+    padding-left: 3mm;
+    position: relative;
+  }
+
+  .compact li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 1.35mm;
+    width: 1.2mm;
+    height: 1.2mm;
+    border-radius: 50%;
+    background: #93c5fd;
+  }
+
+  .compact li b { color: #1f2d44; }
+
+  .protocol th, .protocol td { font-size: 7.15pt; padding: 1.2mm 1.8mm; }
+  .protocol td:first-child { font-family: "Cascadia Mono", Consolas, monospace; font-size: 6.9pt; }
+
+  .risk th, .risk td { font-size: 7.2pt; padding: 1.35mm 1.8mm; }
+  .risk td:first-child { font-weight: 600; }
+  .risk .p0 { color: var(--red); font-weight: 800; }
+  .risk .p1 { color: var(--amber); font-weight: 800; }
+  .risk .p2 { color: #075985; font-weight: 800; }
+  .risk .p3 { color: #64748b; font-weight: 800; }
+
+  .steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+
+  .steps li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 7mm;
+    margin-bottom: 2.1mm;
+    font-size: 7.75pt;
+    line-height: 1.38;
+    color: #46556c;
+  }
+
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4.8mm;
+    height: 4.8mm;
+    border-radius: 50%;
+    background: #eaf2ff;
+    color: #1d4ed8;
+    font-size: 6.9pt;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .steps li b { color: #1f2d44; }
+
+  .verdict {
+    border-radius: 3mm;
+    padding: 4mm 4.6mm;
+    background:
+      radial-gradient(circle at 92% 16%, rgba(37, 99, 235, 0.4), transparent 38%),
+      linear-gradient(135deg, #0b1220, #14284a);
+    color: #dbeafe;
+    margin-top: 1mm;
+  }
+
+  .verdict .label {
+    font-size: 6.7pt;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #93c5fd;
+    margin-bottom: 1.4mm;
+  }
+
+  .verdict p {
+    margin: 0;
+    font-size: 8.7pt;
+    line-height: 1.5;
+    color: #eff6ff;
+  }
+
+  .verdict p b { color: #ffffff; }
+
+  .filemap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.1mm 5mm;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .filemap li {
+    font-size: 7.2pt;
+    line-height: 1.35;
+    color: #64748b;
+    padding-left: 3mm;
+    position: relative;
+  }
+
+  .filemap li::before {
+    content: "›";
+    position: absolute;
+    left: 0;
+    color: #93c5fd;
+    font-weight: 800;
+  }
+
+  .filemap code {
+    font-family: "Cascadia Mono", Consolas, monospace;
+    font-size: 6.9pt;
+    color: #1e3a8a;
+  }
+
+  .section { margin-top: 4mm; }
+
+  body.preview { background: #ffffff; }
+  body.preview .page { margin: 0; box-shadow: none; }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 -->
+<div class="page">
+  <div class="band">
+    <div class="eyebrow">Project review &middot; README summary &middot; 01 Nov 2026</div>
+    <h1>Gamepad</h1>
+    <p class="tagline">A second-edition Android gamepad that turns a phone into a paired PC controller.</p>
+    <div class="chiprow">
+      <span class="chip">Flutter &middot; Android 15</span>
+      <span class="chip">UDP 7777</span>
+      <span class="chip">Python 3 &middot; asyncio</span>
+      <span class="chip">XInput / Xbox 360</span>
+      <span class="chip">47.7 MB APK</span>
+    </div>
+    <div class="metarow">
+      <div class="meta"><span>Source version</span><strong>2.1.0+3</strong></div>
+      <div class="meta"><span>Release APK</span><strong class="warn">2.0.0+2 &middot; stale</strong></div>
+      <div class="meta"><span>Package</span><strong>com.phonepad.gamepad</strong></div>
+      <div class="meta"><span>Validation</span><strong>4/4 tests &middot; analyzer clean</strong></div>
+    </div>
+  </div>
+
+  <p class="lead">Gamepad is a separate second-edition Android gamepad for Windows PCs. It replaces manual IP entry with a six-digit pairing code, keeps a private token for automatic reconnects, and streams a complete controller surface to a Python bridge that presents an Xbox 360 pad to PCSX2. The original PhonePad 1 and its server in <b>E:\Consloe</b> are untouched.</p>
+
+  <div class="callout critical"><strong>Critical finding &mdash; release artifact mismatch.</strong> The source and README are at <b>2.1.0+3</b> and include the new 8&nbsp;ms input stream, Android Wi-Fi low-latency lock, and DSCP marking. The APK at <b>E:\Gamepad\Gamepad-release.apk</b> is still <b>2.0.0+2</b>, built 31 Oct 22:21 &mdash; before those changes. Rebuild and reinstall before treating this as a finished release.</div>
+
+  <h2>What is built <span class="sub">source and project assets</span></h2>
+  <div class="grid">
+    <div class="card">
+      <div class="card-top"><div class="num">01</div><h3>Pair-code onboarding</h3></div>
+      <p>The PC window shows a six-digit code; the phone submits it over UDP. No IP typing or QR scanning.</p>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="num">02</div><h3>Token-based reconnect</h3></div>
+      <p>The server issues a 64-bit token, persists it with the phone's IP, and accepts HELLO on later launches.</p>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="num">03</div><h3>Complete pad surface</h3></div>
+      <p>Face buttons, D-pad, both sticks, L1/L2/R1/R2, Select/Start, L3/R3, and PS/Guide.</p>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="num">04</div><h3>Turbo</h3></div>
+      <p>Held face buttons and L1/R1 pulse every 65&nbsp;ms (about 7&ndash;8&nbsp;Hz); other controls stay continuous.</p>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="num">05</div><h3>Custom layout</h3></div>
+      <p>Seven clusters can be dragged and scaled 70&ndash;135%; normalized positions are saved per phone.</p>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="num">06</div><h3>Essentials &amp; low latency</h3></div>
+      <p>Keep-screen-on, immersive landscape, Wi-Fi low-latency lock, DSCP best effort, 8&nbsp;ms stream, pause in background.</p>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="num">07</div><h3>PC bridge</h3></div>
+      <p>Python asyncio server on UDP 7777 drives vgamepad's Xbox 360 controller; a Linux evdev backend is also present.</p>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="num">08</div><h3>Setup package</h3></div>
+      <p>Launcher, firewall script, requirements, README, four widget tests, and a release APK.</p>
+    </div>
+  </div>
+
+  <div class="callout good" style="margin-top:4mm; margin-bottom:0"><strong>Scope:</strong> an Android client, a Windows/Linux Python bridge, and a PCSX2 XInput path. It is not a cloud service, an iOS app, a multiplayer controller hub, or a replacement for a physical pad in competitive play.</div>
+
+  <div class="footer"><span><strong>Gamepad</strong> &middot; Project Summary</span><span>Page 1 / 4</span></div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page">
+  <h2>How it works <span class="sub">one UDP port, one active pad</span></h2>
+  <p class="lead" style="margin-top:0">Pairing, reconnect, input, and link acknowledgements all travel over UDP 7777. The phone never talks to PCSX2 directly.</p>
+
+  <div class="flow">
+    <div class="node"><b>Gamepad</b><span>Flutter UI &middot; touch state</span></div>
+    <div class="arrow">&rarr;</div>
+    <div class="node"><b>UDP 7777</b><span>16-byte input + ACK</span></div>
+    <div class="arrow">&rarr;</div>
+    <div class="node"><b>Python bridge</b><span>asyncio &middot; token check</span></div>
+    <div class="arrow">&rarr;</div>
+    <div class="node"><b>Xbox 360 pad</b><span>vgamepad / XInput</span></div>
+    <div class="arrow">&rarr;</div>
+    <div class="node"><b>PCSX2</b><span>Pad 1 &middot; XInput</span></div>
+  </div>
+  <p class="caption"><b>Input packet:</b> 16 bytes = 8-byte base (buttons, four axes, sequence, feature flags) + 8-byte paired token. Byte 7 carries the PS/Guide feature flag.</p>
+
+  <div class="seq">
+    <div class="step"><span class="n">1</span><b>PC shows a code</b><p>The server prints the value stored in paircode.txt.</p></div>
+    <div class="step"><span class="n">2</span><b>Phone submits it</b><p>GAMEPAD_PAIR plus six digits, sent to the LAN address.</p></div>
+    <div class="step"><span class="n">3</span><b>Server issues a token</b><p>A 64-bit token is generated and saved with the phone IP.</p></div>
+    <div class="step"><span class="n">4</span><b>App starts streaming</b><p>IP and token are stored; 16-byte samples go out every 8 ms.</p></div>
+    <div class="step"><span class="n">5</span><b>Link is monitored</b><p>ACKs arrive about once per second; 3.5 s without one shows No reply.</p></div>
+  </div>
+
+  <h2>README at a glance</h2>
+  <div class="cols2">
+    <div class="note">
+      <h3>Quick start</h3>
+      <ol>
+        <li>Install <b>Gamepad-release.apk</b> on the phone.</li>
+        <li>Run <b>E:\Gamepad\start-server.bat</b> on the PC.</li>
+        <li>Open the app and enter the six-digit code.</li>
+        <li>Confirm <b>Sending</b> and the server's <b>Paired Gamepad</b> line.</li>
+        <li>In PCSX2: <b>Pad 1 &rarr; XInput &rarr; Xbox 360 Controller for Windows</b>.</li>
+      </ol>
+    </div>
+    <div class="note">
+      <h3>Pairing and server files</h3>
+      <ul>
+        <li><b>paircode.txt</b> keeps the code across restarts.</li>
+        <li><b>paired_clients.json</b> stores tokens; 8 clients maximum, oldest evicted.</li>
+        <li>Delete both files to rotate the code and forget phones.</li>
+        <li>Legacy 8-byte packets are ignored unless started with <b>--allow-legacy</b>.</li>
+        <li>Gamepad packets add the PS flag and the 64-bit token.</li>
+      </ul>
+    </div>
+    <div class="note">
+      <h3>Controls, layout, turbo</h3>
+      <ul>
+        <li><b>LAYOUT</b> opens the editor: drag any of seven clusters, resize 70&ndash;135%.</li>
+        <li><b>Reset all</b> restores defaults; <b>Done</b> saves and survives restarts.</li>
+        <li><b>TURBO</b> affects held face buttons and L1/R1 only; sticks, D-pad, L2/R2, and menu buttons are unaffected.</li>
+        <li>Essentials: keep screen awake, L3/R3, PS/Guide, immersive landscape.</li>
+      </ul>
+    </div>
+    <div class="note">
+      <h3>Status and troubleshooting</h3>
+      <div class="status-row">
+        <div class="status green"><b>Sending</b>ACK received within 3.5 s.</div>
+        <div class="status amber"><b>No reply</b>No ACK; check server/firewall.</div>
+        <div class="status red"><b>Socket error</b>UDP bind failed; re-pair.</div>
+      </div>
+      <ul style="margin-top:2mm">
+        <li>Allow inbound <b>UDP 7777</b>; same Wi-Fi or hotspot required.</li>
+        <li>Only one server can own 7777; PhonePad 1 and 2 cannot run together.</li>
+        <li>Prefer a 5&nbsp;GHz hotspot, keep the phone charged, disable Wi-Fi adapter power saving.</li>
+        <li><b>ping</b> the phone: most replies should be under 10&nbsp;ms.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 style="margin-top:4mm">Protocol messages</h2>
+  <table class="protocol">
+    <thead><tr><th style="width:30%">Message</th><th style="width:15%">Direction</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>GAMEPAD_PAIR &lt;code&gt;</td><td>Phone &rarr; PC</td><td>Request pairing with the six-digit code shown in the server window.</td></tr>
+      <tr><td>GAMEPAD_PAIRED &lt;token&gt;</td><td>PC &rarr; Phone</td><td>Issue a 64-bit token; the failure reply is GAMEPAD_BAD_CODE.</td></tr>
+      <tr><td>GAMEPAD_HELLO &lt;token&gt;</td><td>Phone &rarr; PC</td><td>Reconnect with the saved token; the PC replies GAMEPAD_READY.</td></tr>
+      <tr><td>16-byte input</td><td>Phone &rarr; PC</td><td>Buttons, four axes, sequence, feature flags, and the paired token.</td></tr>
+      <tr><td>GAMEPAD_ACK</td><td>PC &rarr; Phone</td><td>Link health, sent roughly once per second while input is live.</td></tr>
+      <tr><td>PHONEPAD_DISCOVER_V1 / SERVER_V1</td><td>Both</td><td>LAN discovery and a pairing fallback when broadcast is unreliable.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout good" style="margin-top:2mm; margin-bottom:0"><strong>Latency design in the 2.1 source:</strong> a fresh 16-byte sample every 8&nbsp;ms keeps the Wi-Fi radio warm; a low-latency Wi-Fi lock and DSCP 0xB8 marking are requested; streaming stops when the app leaves the foreground. These are best-effort Android and network hints, not latency guarantees.</div>
+
+  <div class="footer"><span><strong>Gamepad</strong> &middot; README summary</span><span>Page 2 / 4</span></div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page">
+  <h2>Verification snapshot <span class="sub">what was actually exercised</span></h2>
+  <table>
+    <thead><tr><th style="width:38%">Check</th><th>Result</th><th style="width:16%">Status</th></tr></thead>
+    <tbody>
+      <tr><td>Six-digit pairing</td><td>Correct code issued a token; wrong code returned BAD_CODE.</td><td class="status-cell pass">PASS</td></tr>
+      <tr><td>Reconnect</td><td>HELLO accepted after a server restart using the saved token.</td><td class="status-cell pass">PASS</td></tr>
+      <tr><td>Token and legacy filtering</td><td>Bad tokens and 8-byte legacy packets were ignored by default.</td><td class="status-cell pass">PASS</td></tr>
+      <tr><td>Link status / ACK</td><td>ACKs received about once per second; app showed <b>Sending</b>.</td><td class="status-cell pass">PASS</td></tr>
+      <tr><td>XInput buttons</td><td>A, L1, L3, R3, and START mapped to the virtual Xbox 360 pad.</td><td class="status-cell pass">PASS</td></tr>
+      <tr><td>PS / Guide</td><td>Flag is sent, but XInputGetState does not expose the Guide bit.</td><td class="status-cell partial">PARTIAL</td></tr>
+      <tr><td>Keep-awake</td><td>The phone stayed awake while the pad was open.</td><td class="status-cell pass">PASS</td></tr>
+      <tr><td>Wi-Fi low-latency lock</td><td>Implemented in 2.1 source; not present in the shipped 2.0 APK, so unverified on-device.</td><td class="status-cell partial">PARTIAL</td></tr>
+      <tr><td>Turbo pulsing</td><td>Held A toggled at ~65 ms on-device; steady when turbo was off.</td><td class="status-cell pass">PASS</td></tr>
+      <tr><td>Layout save/restore</td><td>Widget tests pass; on-device persistence check was interrupted by an ADB drop.</td><td class="status-cell partial">PARTIAL</td></tr>
+      <tr><td>Latency, loss, soak</td><td>No 30-minute soak, packet-loss, or jitter measurement was run.</td><td class="status-cell fail">NOT TESTED</td></tr>
+      <tr><td>Multi-client</td><td>No two-phone or player-slot test was run.</td><td class="status-cell fail">NOT TESTED</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Major disadvantages <span class="sub">ranked by release risk</span></h2>
+
+  <div class="issue">
+    <div class="issue-head"><span class="pill critical">Critical</span><h3>The shipped APK is older than the source</h3></div>
+    <p>Source and README are <b>2.1.0+3</b>, but <b>Gamepad-release.apk</b> is <b>2.0.0+2</b> and predates the 8&nbsp;ms stream, Wi-Fi lock, and DSCP work. The APK cannot contain changes made after it was built. This is the single biggest gap between what the project claims and what a user actually installs.</p>
+  </div>
+
+  <div class="issue">
+    <div class="issue-head"><span class="pill high">High</span><h3>The control channel is plaintext and replayable</h3></div>
+    <p>The 64-bit token is sent in every UDP packet with no encryption, HMAC, nonce, or challenge-response. Anyone able to sniff the hotspot can capture and replay input; tokens are stored in plaintext in <b>paired_clients.json</b> and Android preferences. The six-digit code has no expiry and no rate limit, so online guessing is not prevented by the protocol itself.</p>
+  </div>
+
+  <div class="issue">
+    <div class="issue-head"><span class="pill high">High</span><h3>One controller, and the last phone wins</h3></div>
+    <p>The server has one virtual pad, one active token, and one client IP. If two phones send input, they overwrite each other. There are no player slots, per-client routing, or multiplayer support, which limits the project to a single-player accessory.</p>
+  </div>
+
+  <div class="issue">
+    <div class="issue-head"><span class="pill high">High</span><h3>Fixed port, driver dependency, setup coupling</h3></div>
+    <p>UDP 7777 is hard-coded, so PhonePad 1 and Gamepad cannot run together and another app may already own the port. The server needs Python, <b>vgamepad</b>, and the ViGEmBus driver; the Linux backend is untested. <b>start-server.bat</b> falls back to <b>E:\Consloe\.venv</b>, coupling the new edition to the old project directory.</p>
+  </div>
+
+  <div class="issue">
+    <div class="issue-head"><span class="pill medium">Medium-high</span><h3>Sideload-only, debug-signed distribution</h3></div>
+    <p>The release APK uses the Android debug certificate. There is no Play Store listing, no update channel, and no signed release pipeline. Android shows sideload warnings, and users must manually track new versions.</p>
+  </div>
+
+  <div class="issue">
+    <div class="issue-head"><span class="pill medium">Medium</span><h3>Limited input fidelity</h3></div>
+    <p>PS/Guide is not visible through XInputGetState, so it may not reach PCSX2. There is no rumble, L2/R2 are digital 0/255 rather than analog triggers, button remapping and macros are absent, and the turbo rate is fixed at about 7&ndash;8&nbsp;Hz.</p>
+  </div>
+
+  <div class="footer"><span><strong>Gamepad</strong> &middot; Verification and risks</span><span>Page 3 / 4</span></div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page">
+  <h2>Other limitations <span class="sub">important, but secondary</span></h2>
+  <ul class="compact">
+    <li><b>Latency is best-effort.</b> The 125&nbsp;Hz stream and Wi-Fi lock help, but DSCP can be ignored; power saving and 2.4&nbsp;GHz congestion can add 50&ndash;100&nbsp;ms spikes. Continuous streaming also costs battery and airtime.</li>
+    <li><b>Test depth is thin.</b> Only four widget smoke tests exist. There is no protocol fuzz/replay suite, no end-to-end test, no long soak, and no packet-loss or multi-client coverage.</li>
+    <li><b>Operational friction.</b> The code appears only in the console, is static until files are deleted, and there is no tray app or log rotation. Eight tokens are kept with FIFO eviction; losing a token means re-pairing.</li>
+    <li><b>UX gaps.</b> Landscape only, fixed toolbar sizing, no button remapping, limited accessibility labels, and no portrait mode. The center panel can crowd small screens.</li>
+    <li><b>Documentation drift.</b> <b>server.py</b> still describes 12-byte paired packets although the constant is 16 bytes. The README documents 2.1 low-latency features that are not in the shipped 2.0 APK.</li>
+    <li><b>No internet play.</b> IPv4 LAN only; no NAT traversal, relay, or IPv6. Both devices must share a hotspot or Wi-Fi subnet.</li>
+  </ul>
+
+  <h2>Risk matrix</h2>
+  <table class="risk">
+    <thead><tr><th style="width:42%">Risk</th><th>Likelihood</th><th>Impact</th><th style="width:12%">Priority</th></tr></thead>
+    <tbody>
+      <tr><td>Stale APK shipped as final</td><td>Certain</td><td>High</td><td class="p0">P0</td></tr>
+      <tr><td>Token sniffing or replay on LAN</td><td>Medium</td><td>High</td><td class="p0">P0</td></tr>
+      <tr><td>Two phones fight for control</td><td>Medium</td><td>Medium</td><td class="p1">P1</td></tr>
+      <tr><td>Port conflict or setup failure</td><td>High</td><td>Medium</td><td class="p1">P1</td></tr>
+      <tr><td>Wi-Fi latency spike during play</td><td>High</td><td>Medium</td><td class="p2">P2</td></tr>
+      <tr><td>Token loss requires re-pairing</td><td>Low</td><td>Low</td><td class="p3">P3</td></tr>
+    </tbody>
+  </table>
+
+  <div class="cols2" style="gap:6mm">
+    <div>
+      <h2 style="font-size:13pt">Recommended next steps</h2>
+      <ol class="steps">
+        <li><b>Rebuild and reinstall 2.1.0+3.</b> Replace the APK, confirm versionName 2.1.0 / versionCode 3, and re-run pairing plus the low-latency check.</li>
+        <li><b>Authenticate the channel.</b> Add challenge-response or HMAC, rotate/expire tokens, rate-limit pairing, and add per-device revoke. Consider DTLS for confidentiality.</li>
+        <li><b>Package the server.</b> Ship a Windows tray/service with bundled Python and ViGEm, a configurable port, and a log file with health state.</li>
+        <li><b>Broaden tests.</b> Cover replay, sequence wrap, reconnect, layout persistence, two clients, packet loss, and a 30-minute soak.</li>
+        <li><b>Close the input gaps.</b> Add remapping, analog triggers, and rumble; document the PS limitation and publish a support matrix.</li>
+      </ol>
+    </div>
+    <div>
+      <h2 style="font-size:13pt">Project file map</h2>
+      <ul class="filemap">
+        <li><code>Gamepad-release.apk</code><br>Shipped APK (currently 2.0.0+2)</li>
+        <li><code>lib\</code><br>Flutter app: pair, pad, layout, net</li>
+        <li><code>server.py</code><br>UDP bridge, pairing, ACK</li>
+        <li><code>start-server.bat</code><br>Launcher with venv fallback</li>
+        <li><code>paircode.txt</code><br>Persistent six-digit code</li>
+        <li><code>paired_clients.json</code><br>Issued tokens and phone IPs</li>
+        <li><code>test\layout_test.dart</code><br>Four widget smoke tests</li>
+        <li><code>README.md</code><br>Setup, layout, turbo, troubleshooting</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="verdict">
+    <div class="label">Bottom line</div>
+    <p><b>Usable today for casual PCSX2 on a trusted hotspot.</b> The pairing flow, pad surface, turbo, keep-awake, and core XInput path work. It is <b>not release-grade</b> until the APK is rebuilt and the plaintext control channel is authenticated. PhonePad 1 remains independent and untouched.</p>
+  </div>
+
+  <div class="footer"><span><strong>Gamepad</strong> &middot; Summary based on README.md and source inspection &middot; 01 Nov 2026</span><span>Page 4 / 4</span></div>
+</div>
+
+<script>
+  if (location.hash) {
+    const page = Number(location.hash.slice(1));
+    document.querySelectorAll('.page').forEach((element, index) => {
+      element.style.display = index + 1 === page ? 'block' : 'none';
+    });
+    document.body.classList.add('preview');
+  }
+</script>
+</body>
+</html>

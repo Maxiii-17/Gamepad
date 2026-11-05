@@ -1,0 +1,9 @@
+$env:JAVA_HOME = 'D:\Android\jdk-21'
+$env:ANDROID_HOME = 'D:\Android\Sdk'
+$env:ANDROID_SDK_ROOT = 'D:\Android\Sdk'
+$env:ANDROID_USER_HOME = 'D:\Android\.android'
+$env:GRADLE_USER_HOME = 'D:\Android\gradle'
+$env:PUB_CACHE = 'D:\Android\pub-cache'
+$env:TEMP = 'D:\Android\tmp'
+$env:TMP = 'D:\Android\tmp'
+$env:Path = "D:\Program File\flutter\bin;D:\Android\jdk-21\bin;D:\Android\Sdk\platform-tools;D:\Android\Sdk\cmdline-tools\latest\bin;$env:Path"
