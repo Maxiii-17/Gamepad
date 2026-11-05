@@ -22,11 +22,11 @@ Future<void> main() async {
       ? null
       : PairSession(ip: ip, token: token);
 
-  runApp(PhonePadApp(initial: initial));
+  runApp(GamepadApp(initial: initial));
 }
 
-class PhonePadApp extends StatelessWidget {
-  const PhonePadApp({super.key, required this.initial});
+class GamepadApp extends StatelessWidget {
+  const GamepadApp({super.key, required this.initial});
 
   final PairSession? initial;
 

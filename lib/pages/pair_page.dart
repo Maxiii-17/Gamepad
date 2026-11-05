@@ -156,35 +156,14 @@ class _PairPageState extends State<PairPage> {
                             Row(
                               children: [
                                 Text(
-                                  'PhonePad',
+                                  'Gamepad',
                                   style: theme.textTheme.headlineSmall
                                       ?.copyWith(
                                         fontWeight: FontWeight.w800,
                                         letterSpacing: 0.2,
                                       ),
                                 ),
-                                const SizedBox(width: 8),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 3,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: accent.withValues(alpha: 0.16),
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(
-                                      color: accent.withValues(alpha: 0.35),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    '2',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w800,
-                                      color: accent,
-                                    ),
-                                  ),
-                                ),
+
                               ],
                             ),
                             const SizedBox(height: 4),

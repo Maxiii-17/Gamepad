@@ -26,7 +26,7 @@ void main() {
       ),
     );
     await tester.pump();
-    expect(find.text('PhonePad'), findsOneWidget);
+    expect(find.text('Gamepad'), findsOneWidget);
     expect(find.text('Pair'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });

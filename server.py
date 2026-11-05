@@ -424,7 +424,7 @@ class PhonePadProtocol(asyncio.DatagramProtocol):
         self._client_addr = addr
 
         if new_client:
-            label = "Gamepad" if paired else "PhonePad"
+            label = "Gamepad" if paired else "Gamepad (unpaired)"
             print(f"{label} client: {addr[0]}", flush=True)
 
         self._store.bind(token, addr[0])
@@ -474,7 +474,7 @@ class PhonePadProtocol(asyncio.DatagramProtocol):
             self._neutral = True
             self._last_seq = None
             self._backend.neutral()
-            print("PhonePad idle: controller neutral", flush=True)
+            print("Gamepad idle: controller neutral", flush=True)
 
     def shutdown(self) -> None:
         if self._timeout_handle is not None:
@@ -503,7 +503,7 @@ async def _serve() -> None:
         except OSError as exc:
             if getattr(exc, "winerror", None) == 10048 or exc.errno == errno.EADDRINUSE:
                 print(
-                    f"PhonePad is already running: UDP {PORT} is in use.",
+                    f"Gamepad is already running: UDP {PORT} is in use.",
                     flush=True,
                 )
                 print("Close the other server window and try again.", flush=True)
